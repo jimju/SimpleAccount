@@ -16,6 +16,7 @@ import com.jim.account.model.imp.AccountModelImp;
 public class AccountEditActivity extends AccountActivity {
     private AccountBean mData;
     private AccountModel mModel;
+    CheckBox mCheckBox;
     @Override
     protected void initDatas() {
         super.initDatas();
@@ -27,6 +28,7 @@ public class AccountEditActivity extends AccountActivity {
     @Override
     protected void initViews() {
         super.initViews();
+        mCheckBox = (CheckBox) findViewById(R.id.checkbox_normal_activity_account);
         //设置日期
         mTextViewTime.setText(mData.getTime());
         mTextViewCalculate2.setText(String.valueOf(mData.getPay()));
@@ -34,6 +36,7 @@ public class AccountEditActivity extends AccountActivity {
         mTextViewTime.setText(mData.getTime());
         mImageViewIcon.setImageResource(mData.getImageId());
         mTextViewType.setText(mData.getProject());
+        mCheckBox.setChecked(mData.getNormal().equals("Y"));
     }
 
     /**
@@ -48,8 +51,7 @@ public class AccountEditActivity extends AccountActivity {
             return;
         }
         try {
-            CheckBox checkBox = (CheckBox) findViewById(R.id.checkbox_normal_activity_account);
-            checkBox.setChecked(mData.getNormal().equals("Y"));
+            mCheckBox.setChecked(mData.getNormal().equals("Y"));
             AccountBean bean = new AccountBean();
             bean.setId(mData.getId());
             bean.setProject(mTextViewType.getText().toString());
@@ -58,7 +60,7 @@ public class AccountEditActivity extends AccountActivity {
             bean.setPay(result);
             String remark = mTextViewRemark.getText().toString().trim();
             bean.setRemark(remark.equals("备注") ? "" : remark);
-            bean.setNormal(checkBox.isChecked() ? "Y" : "N");
+            bean.setNormal(mCheckBox.isChecked() ? "Y" : "N");
             mModel.updateAccount(bean);
             setResult(RESULT_OK);
         } catch (Exception e) {
