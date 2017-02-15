@@ -30,6 +30,7 @@ import java.util.Calendar;
 
 public class GlideFragment extends BaseFragment implements YearMonthMoveView.OnDateChangedListener, CalendarAdapter.DayClickListenner {
     private Calendar mCalendar = Calendar.getInstance();
+    private int mCurrentMonth = 0;
     GridView mGridView;
     YearMonthMoveView mYearMonthView;
     TextView mTextViewBudget,mTextViewSurplus,mTextViewPay;
@@ -69,7 +70,8 @@ public class GlideFragment extends BaseFragment implements YearMonthMoveView.OnD
         mTextViewBudget = (TextView) view.findViewById(R.id.textview_budget_fragment_glide);
         mTextViewPay = (TextView) view.findViewById(R.id.textview_pay_fragment_glide);
         mTextViewSurplus = (TextView) view.findViewById(R.id.textview_surplus_fragment_glide);
-        ondateChanged(mCalendar.get(Calendar.YEAR),mCalendar.get(Calendar.MONTH)+1);
+        mCurrentMonth = mCalendar.get(Calendar.MONTH)+1;
+        ondateChanged(mCalendar.get(Calendar.YEAR),mCurrentMonth);
         setPayInfo(DateUtils.getYear(),DateUtils.getMonth());
     }
 
@@ -87,6 +89,7 @@ public class GlideFragment extends BaseFragment implements YearMonthMoveView.OnD
 //        Toast.makeText(getActivity(),String.format("%d - %d - %d",year,month,day),Toast.LENGTH_LONG).show();
         Intent intent = new Intent(getActivity(), DateAccountListActivity.class);
         intent.putExtra(AccountDbHelper.AccountColum.TIME,String.format("%d-%d-%d",year,month,day));
+        mCurrentMonth = month;
         startActivity(intent);
     }
 
@@ -94,7 +97,7 @@ public class GlideFragment extends BaseFragment implements YearMonthMoveView.OnD
     public void onResume() {
         super.onResume();
         if (toRefresh){
-            ondateChanged(mCalendar.get(Calendar.YEAR),mCalendar.get(Calendar.MONTH)+1);
+            ondateChanged(mCalendar.get(Calendar.YEAR),mCurrentMonth);
         }
     }
 
